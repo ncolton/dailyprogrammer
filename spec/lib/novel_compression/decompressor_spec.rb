@@ -2,7 +2,7 @@ require 'rspec'
 require 'spec_helper'
 require 'novel_compression/decompressor'
 
-input = <<-EOF
+input_string = <<-EOF
 5
 is
 my
@@ -12,23 +12,17 @@ stan
 2! ! R 1^ 3 0 4^ . E
 EOF
 
-expected_dictionary = ['is', 'my', 'hello', 'name', 'stan']
+describe NovelCompression::Decompressor do
+	let(:expected_dictionary) { ['is', 'my', 'hello', 'name', 'stan'] }
+	let(:input) { StringIO.new input_string }
+	let(:decompressor) { NovelCompression::Decompressor.new input }
 
-describe 'decompressor' do
-	it 'builds a dictionary from provided text' do
-		decomp = NovelCompression::Decompressor.new input
-		expect(decomp.dictionary).to eq(expected_dictionary)
+	it 'builds a dictionary properly' do
+		expect(decompressor.dictionary).to eq(expected_dictionary)
 	end
 
 	it 'decompresses' do
 		expected_output = "HELLO!\nMy name is Stan."
-
-		decomp = NovelCompression::Decompressor.new input
-		expect(decomp.decompress).to eq(expected_output)
-	end
-
-	context '#process_chunk' do
-		it 'returns the appropriate word' do
-		end
+		expect(decompressor.decompress).to eq(expected_output)
 	end
 end
