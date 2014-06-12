@@ -22,6 +22,8 @@ TODO: Write usage instructions here
 
 ## Contributing
 
+Given the purpose of this repository and it‘s exercises, this seems like a silly thing in most cases. However, if you find it might be educational for me, PLEASE feel free to do the following steps.
+
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
