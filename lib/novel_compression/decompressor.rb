@@ -3,10 +3,10 @@ module NovelCompression
 		attr_accessor :dictionary
 
 		def initialize(input)
-			data = input.split("\n")
-			dictionary_word_count = data[0].to_i
-			@dictionary = data[1..dictionary_word_count]
-			@instructions = data[dictionary_word_count+1..-1]
+			@input = input
+			@dictionary ||= []
+			word_count = @input.gets.to_i
+			word_count.times { @dictionary << @input.gets.strip }
 		end
 
 		def decompress
