@@ -21,9 +21,10 @@ module NovelCompression
 
 				index = Integer(match[:number], 10)
 
-				if '^'.eql? match[:operator]
+				case match[:operator]
+				when '^'
 					text = @dictionary[index].capitalize
-				elsif '!'.eql? match[:operator]
+				when '!'
 					text = @dictionary[index].upcase
 				else
 					text = @dictionary[index]
