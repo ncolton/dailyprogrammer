@@ -22,14 +22,41 @@ describe NovelCompression::Decompressor do
 			expect(decompressor.dictionary).to eq(expected_dictionary)
 		end
 
-	context 'instruction parsing'
+	context '#process_instructions' do
+		let(:input) { StringIO.new input_string }
+		let(:decompressor) { NovelCompression::Decompressor.new input }
+
+		it 'E stops processing the instruction set' do
+			res = decompressor.process_instructions 'E'
+			expect(res).to eq('')
+		end
+
+		it 'N results in word N' do
+			res = decompressor.process_instructions '0 2 1 E'
+			expect(res).to eq('is hello my')
+		end
+
+		it 'N^ results in word N capitalized' do
+			res = decompressor.process_instructions '0 2^ 1 E'
+			expect(res).to eq('is Hello my')
+		end
+
+		it 'N! results in word N upper-cased' do
+			res = decompressor.process_instructions '0 2! 1 E'
+			expect(res).to eq('is HELLO my')
+		end
+
+		it '- hyphen separates the previous and following word'
+		it '.,?!;: appends the symbol to the previous word'
+		it 'R adds a new line'
+	end
 
 	context 'operation'
 		let(:input) { StringIO.new input_string }
 		let(:decompressor) { NovelCompression::Decompressor.new input }
 
-		it 'decompresses' do
-			expected_output = "HELLO!\nMy name is Stan."
-			expect(decompressor.decompress).to eq(expected_output)
-		end
+		# it 'decompresses' do
+		# 	expected_output = "HELLO!\nMy name is Stan."
+		# 	expect(decompressor.decompress).to eq(expected_output)
+		# end
 end
