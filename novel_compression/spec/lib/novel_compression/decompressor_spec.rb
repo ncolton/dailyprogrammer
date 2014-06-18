@@ -48,7 +48,11 @@ describe NovelCompression::Decompressor do
 
 		it '- hyphen separates the previous and following word'
 		it '.,?!;: appends the symbol to the previous word'
-		it 'R adds a new line'
+
+		it 'R adds a new line' do
+			res = decompressor.process_instructions '0 R 2! R 1 E'
+			expect(res).to eq('is\nHELLO\nmy')
+		end
 	end
 
 	context 'operation'
