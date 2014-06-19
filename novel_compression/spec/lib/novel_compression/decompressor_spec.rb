@@ -47,7 +47,11 @@ describe NovelCompression::Decompressor do
 			expect(res).to eq('is HELLO my')
 		end
 
-		it '- hyphen separates the previous and following word'
+		it '- hyphen separates the previous and following word' do
+			res = decompressor.process_instructions '0 - 0 E'
+			expect(res).to eq('is-is')
+		end
+
 		it '.,?!;: appends the symbol to the previous word'
 
 		it 'R adds a new line' do

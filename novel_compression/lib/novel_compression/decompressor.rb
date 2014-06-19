@@ -30,7 +30,11 @@ module NovelCompression
 				when 'R'
 					text = '\n'
 					@chunk_is_newline = true
-				else
+				when '-'
+					text = '-'
+					@hyphenate_previous_word = true
+				when ''
+				# else
 					index = Integer(match[:number], 10)
 					text = @dictionary[index]
 				end
@@ -56,6 +60,8 @@ module NovelCompression
 
 			@previous_word_is_newline = @chunk_is_newline
 			@chunk_is_newline = false
+			# TODO: This seems like a wrongheaded approach.
+			@previous_word_is_newline = true if @hyphenate_previous_word
 			@hyphenate_previous_word = false
 			return retval
 		end
