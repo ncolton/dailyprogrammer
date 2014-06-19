@@ -11,6 +11,7 @@ module NovelCompression
 		end
 
 		def process_instructions(instructions)
+			accepted_punctuation =['.', ',', '?', '!', ';', ':']
 			@chunk_is_newline = false
 			@hyphenate_previous_word = false
 			@previous_word_is_newline = true
@@ -33,10 +34,16 @@ module NovelCompression
 				when '-'
 					text = '-'
 					@hyphenate_previous_word = true
+				when *accepted_punctuation
+					text = match[:operator]
+					text << ' '
+					@chunk_is_newline = true
 				when ''
-				# else
 					index = Integer(match[:number], 10)
 					text = @dictionary[index]
+				else
+					text = ''
+					@chunk_is_newline = true
 				end
 
 				if should_space_be_added
@@ -62,7 +69,9 @@ module NovelCompression
 			@chunk_is_newline = false
 			# TODO: This seems like a wrongheaded approach.
 			@previous_word_is_newline = true if @hyphenate_previous_word
+			@previous_word_is_newline = true if @do_not_pad
 			@hyphenate_previous_word = false
+			@do_not_pad = false
 			return retval
 		end
 

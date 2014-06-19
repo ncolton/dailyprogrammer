@@ -52,7 +52,10 @@ describe NovelCompression::Decompressor do
 			expect(res).to eq('is-is')
 		end
 
-		it '.,?!;: appends the symbol to the previous word'
+		it 'any of .,?!;: appends the symbol to the previous word' do
+			res = decompressor.process_instructions '0 : 0 E'
+			expect(res).to eq('is: is')
+		end
 
 		it 'R adds a new line' do
 			res = decompressor.process_instructions '0 R 2! R 1 E'
