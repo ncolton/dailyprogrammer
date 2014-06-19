@@ -13,7 +13,7 @@ stan
 EOF
 
 describe NovelCompression::Decompressor do
-	context 'dictionary parsing'
+	context 'dictionary parsing' do
 		let(:expected_dictionary) { ['is', 'my', 'hello', 'name', 'stan'] }
 		let(:input) { StringIO.new input_string }
 		let(:decompressor) { NovelCompression::Decompressor.new input }
@@ -21,6 +21,7 @@ describe NovelCompression::Decompressor do
 		it 'builds a dictionary properly' do
 			expect(decompressor.dictionary).to eq(expected_dictionary)
 		end
+	end
 
 	context '#process_instructions' do
 		let(:input) { StringIO.new input_string }
@@ -55,7 +56,7 @@ describe NovelCompression::Decompressor do
 		end
 	end
 
-	context 'operation'
+	context 'operation' do
 		let(:input) { StringIO.new input_string }
 		let(:decompressor) { NovelCompression::Decompressor.new input }
 
@@ -63,4 +64,5 @@ describe NovelCompression::Decompressor do
 		# 	expected_output = "HELLO!\nMy name is Stan."
 		# 	expect(decompressor.decompress).to eq(expected_output)
 		# end
+	end
 end
