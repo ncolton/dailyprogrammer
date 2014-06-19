@@ -12,8 +12,6 @@ module NovelCompression
 
 		def process_instructions(instructions)
 			accepted_punctuation =['.', ',', '?', '!', ';', ':']
-			@chunk_is_newline = false
-			@hyphenate_previous_word = false
 			@previous_word_is_newline = true
 			chunks = instructions.split
 			output = ""
@@ -30,20 +28,20 @@ module NovelCompression
 					text = @dictionary[index].upcase
 				when 'R'
 					text = '\n'
-					@chunk_is_newline = true
+					@do_not_pad = true
 				when '-'
 					text = '-'
-					@hyphenate_previous_word = true
+					@do_not_pad = true
 				when *accepted_punctuation
 					text = match[:operator]
 					text << ' '
-					@chunk_is_newline = true
+					@do_not_pad = true
 				when ''
 					index = Integer(match[:number], 10)
 					text = @dictionary[index]
 				else
 					text = ''
-					@chunk_is_newline = true
+					@do_not_pad = true
 				end
 
 				if should_space_be_added
@@ -57,20 +55,13 @@ module NovelCompression
 			retval = true
 			if @previous_word_is_newline
 				retval = false
-			elsif @hyphenate_previous_word
-				retval = false
-			elsif @chunk_is_newline == true
+			elsif @do_not_pad
 				retval = false
 			else
 				retval = true
 			end
 
-			@previous_word_is_newline = @chunk_is_newline
-			@chunk_is_newline = false
-			# TODO: This seems like a wrongheaded approach.
-			@previous_word_is_newline = true if @hyphenate_previous_word
-			@previous_word_is_newline = true if @do_not_pad
-			@hyphenate_previous_word = false
+			@previous_word_is_newline = @do_not_pad
 			@do_not_pad = false
 			return retval
 		end
