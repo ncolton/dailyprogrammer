@@ -5,14 +5,16 @@ module NovelCompression
 		def initialize(input)
 			@input = input
 			@dictionary ||= []
+			# First line of input is dictionary size
 			word_count = @input.gets.to_i
+			# Extract the dictionary from the input
 			word_count.times { @dictionary << @input.gets.strip }
 			@chunk_regex = /\A(?<number>\d*)(?<operator>[^\d\s]*)\z/
 		end
 
 		def process_instructions(instructions)
 			accepted_punctuation =['.', ',', '?', '!', ';', ':']
-			@previous_word_is_newline = true
+			@previous_do_not_pad = true
 			chunks = instructions.split
 			output = ""
 			chunks.each do |chunk|
@@ -53,7 +55,7 @@ module NovelCompression
 
 		def should_space_be_added
 			retval = true
-			if @previous_word_is_newline
+			if @previous_do_not_pad
 				retval = false
 			elsif @do_not_pad
 				retval = false
@@ -61,18 +63,9 @@ module NovelCompression
 				retval = true
 			end
 
-			@previous_word_is_newline = @do_not_pad
+			@previous_do_not_pad = @do_not_pad
 			@do_not_pad = false
 			return retval
-		end
-
-		def parse_base_10_int(s)
-			begin
-				val = Integer(match[:number], 10)
-			rescue ArgumentError
-				val = nil
-			end
-			return val
 		end
 	end
 end
