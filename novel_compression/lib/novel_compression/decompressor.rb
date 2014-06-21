@@ -10,24 +10,22 @@ module NovelCompression
 			# Extract the dictionary from the input
 			word_count.times { @dictionary << @input.gets.strip }
 			@chunk_regex = /\A(?<number>\d*)(?<operator>[^\d\s]*)\z/
+			@output = ""
 		end
 
 		def process_instructions(instructions)
 			accepted_punctuation =['.', ',', '?', '!', ';', ':']
 			@previous_do_not_pad = true
+			@do_not_pad = false
 			chunks = instructions.split
-			output = ""
 			chunks.each do |chunk|
 				match = @chunk_regex.match chunk
 				case match[:operator]
 				when 'E'
-					return output
+					return @output
 				when '^'
 					index = Integer(match[:number], 10)
 					text = @dictionary[index].capitalize
-				when '!'
-					index = Integer(match[:number], 10)
-					text = @dictionary[index].upcase
 				when 'R'
 					text = '\n'
 					@do_not_pad = true
@@ -35,21 +33,25 @@ module NovelCompression
 					text = '-'
 					@do_not_pad = true
 				when *accepted_punctuation
-					text = match[:operator]
-					text << ' '
-					@do_not_pad = true
+					if match[:operator] == '!' and match[:number].length > 0
+						# if N!
+						index = Integer(match[:number], 10)
+						text = @dictionary[index].upcase
+					else
+						# if punctuation by itself
+						text = match[:operator]
+						text << ' '
+						@do_not_pad = true
+					end
 				when ''
 					index = Integer(match[:number], 10)
 					text = @dictionary[index]
-				else
-					text = ''
-					@do_not_pad = true
 				end
 
 				if should_space_be_added
-					output << " "
+					@output << " "
 				end
-				output << text
+				@output << text
 			end
 		end
 
