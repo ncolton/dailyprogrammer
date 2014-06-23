@@ -21,20 +21,20 @@ module NovelCompression
 			chunks.each do |chunk|
 				match = @chunk_regex.match chunk
 				case match[:operator]
-				when 'E'
+				when 'E' # end of input
 					return @output
-				when '^'
+				when '^' # capitalize the word
 					index = Integer(match[:number], 10)
 					text = @dictionary[index].capitalize
-				when 'R'
+				when 'R' # new line
 					text = '\n'
 					@do_not_pad = true
-				when '-'
+				when '-' # hyphenate previous and next word
 					text = '-'
 					@do_not_pad = true
 				when *accepted_punctuation
 					if match[:operator] == '!' and match[:number].length > 0
-						# if N!
+						# if N! make word full caps
 						index = Integer(match[:number], 10)
 						text = @dictionary[index].upcase
 					else
@@ -43,7 +43,7 @@ module NovelCompression
 						text << ' '
 						@do_not_pad = true
 					end
-				when ''
+				when '' # just a word
 					index = Integer(match[:number], 10)
 					text = @dictionary[index]
 				end
