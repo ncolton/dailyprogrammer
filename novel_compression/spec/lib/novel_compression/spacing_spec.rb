@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'novel_compression/spacing'
 
-describe Spacing do
+describe NovelCompression::Spacing do
 	describe '.should_space?' do
 		context 'word + word' do
 			let(:stack) { [Spacing::WORD, Spacing::WORD] }

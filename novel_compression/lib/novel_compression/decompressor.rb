@@ -11,6 +11,8 @@ module NovelCompression
 			word_count.times { @dictionary << @input.gets.strip }
 			@chunk_regex = /\A(?<number>\d*)(?<operator>[^\d\s]*)\z/
 			@output = ""
+			@decoded_chunks = []
+			@decoded_chunks_types = []
 		end
 
 		def process_instructions(instructions)
@@ -24,28 +26,37 @@ module NovelCompression
 				when 'E' # end of input
 					return @output
 				when '^' # capitalize the word
-					index = Integer(match[:number], 10)
-					text = @dictionary[index].capitalize
+					text = @dictionary[decode_index match[:number]].capitalize
+					@decoded_chunks << text
+					@decoded_chunks_types << Spacing::WORD
 				when 'R' # new line
 					text = '\n'
 					@do_not_pad = true
+					@decoded_chunks << text
+					@decoded_chunks_types << Spacing::NEWLINE
 				when '-' # hyphenate previous and next word
 					text = '-'
 					@do_not_pad = true
+					@decoded_chunks << text
+					@decoded_chunks_types << Spacing::HYPHEN
 				when *accepted_punctuation
 					if match[:operator] == '!' and match[:number].length > 0
 						# if N! make word full caps
-						index = Integer(match[:number], 10)
-						text = @dictionary[index].upcase
+						text = @dictionary[decode_index match[:number]].upcase
+						@decoded_chunks << text
+						@decoded_chunks_types << Spacing::WORD
 					else
 						# if punctuation by itself
 						text = match[:operator]
 						text << ' '
 						@do_not_pad = true
+						@decoded_chunks << match[:operator]
+						@decoded_chunks_types << Spacing::PUNCTUATION
 					end
 				when '' # just a word
-					index = Integer(match[:number], 10)
-					text = @dictionary[index]
+					text = @dictionary[decode_index match[:number]]
+					@decoded_chunks << text
+					@decoded_chunks_types << Spacing::WORD
 				end
 
 				if should_space_be_added
@@ -53,6 +64,10 @@ module NovelCompression
 				end
 				@output << text
 			end
+		end
+
+		def decode_index(s)
+			index = Integer(s, 10)
 		end
 
 		def should_space_be_added
