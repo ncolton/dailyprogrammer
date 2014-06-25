@@ -12,40 +12,40 @@ module NovelCompression
 			# Extract the dictionary from the input
 			word_count.times { @dictionary << @input.gets.strip }
 			@chunk_regex = /\A(?<number>\d*)(?<operator>[^\d\s]*)\z/
-			@decoded_chunks = []
-			@decoded_chunks_types = []
 		end
 
 		def process_instructions(instructions)
 			accepted_punctuation =['.', ',', '?', '!', ';', ':']
+			decoded_chunks = []
+			decoded_chunks_types = []
 			chunks = instructions.split
 			chunks.each do |chunk|
 				match = @chunk_regex.match chunk
 				case match[:operator]
 				when 'E' # end of input
-					return build_output
+					return build_output decoded_chunks, decoded_chunks_types
 				when '^' # capitalize the word
-					@decoded_chunks << @dictionary[decode_index match[:number]].capitalize
-					@decoded_chunks_types << Spacing::WORD
+					decoded_chunks << @dictionary[decode_index match[:number]].capitalize
+					decoded_chunks_types << Spacing::WORD
 				when 'R' # new line
-					@decoded_chunks << '\n'
-					@decoded_chunks_types << Spacing::NEWLINE
+					decoded_chunks << '\n'
+					decoded_chunks_types << Spacing::NEWLINE
 				when '-' # hyphenate previous and next word
-					@decoded_chunks << '-'
-					@decoded_chunks_types << Spacing::HYPHEN
+					decoded_chunks << '-'
+					decoded_chunks_types << Spacing::HYPHEN
 				when *accepted_punctuation
 					if match[:operator] == '!' and match[:number].length > 0
 						# if N! make word full caps
-						@decoded_chunks << @dictionary[decode_index match[:number]].upcase
-						@decoded_chunks_types << Spacing::WORD
+						decoded_chunks << @dictionary[decode_index match[:number]].upcase
+						decoded_chunks_types << Spacing::WORD
 					else
 						# if punctuation by itself
-						@decoded_chunks << match[:operator]
-						@decoded_chunks_types << Spacing::PUNCTUATION
+						decoded_chunks << match[:operator]
+						decoded_chunks_types << Spacing::PUNCTUATION
 					end
 				when '' # just a word
-					@decoded_chunks << @dictionary[decode_index match[:number]]
-					@decoded_chunks_types << Spacing::WORD
+					decoded_chunks << @dictionary[decode_index match[:number]]
+					decoded_chunks_types << Spacing::WORD
 				end
 			end
 		end
@@ -54,14 +54,14 @@ module NovelCompression
 			index = Integer(s, 10)
 		end
 
-		def build_output
-			output_string = "#{@decoded_chunks[0]}"
+		def build_output(chunks, chunks_types)
+			output_string = "#{chunks[0]}"
 			index = 1
-			while index + 1 <= @decoded_chunks_types.length
-				if Spacing::should_space? @decoded_chunks_types[(index - 1)..index]
+			while index + 1 <= chunks_types.length
+				if Spacing::should_space? chunks_types[(index - 1)..index]
 					output_string << " "
 				end
-				output_string << @decoded_chunks[index]
+				output_string << chunks[index]
 				index = index + 1
 			end
 
