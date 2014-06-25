@@ -12,6 +12,13 @@ module NovelCompression
 			# Extract the dictionary from the input
 			word_count.times { @dictionary << @input.gets.strip }
 			@chunk_regex = /\A(?<number>\d*)(?<operator>[^\d\s]*)\z/
+			@decoded_text = nil
+		end
+
+		def text
+			return @decoded_text unless @decoded_text.nil?
+			lines = @input.readlines.collect { |line| line.strip }
+			@decoded_text = process_instructions(lines.join(" "))
 		end
 
 		def process_instructions(instructions)
@@ -28,7 +35,7 @@ module NovelCompression
 					decoded_chunks << @dictionary[decode_index match[:number]].capitalize
 					decoded_chunks_types << Spacing::WORD
 				when 'R' # new line
-					decoded_chunks << '\n'
+					decoded_chunks << "\n"
 					decoded_chunks_types << Spacing::NEWLINE
 				when '-' # hyphenate previous and next word
 					decoded_chunks << '-'
