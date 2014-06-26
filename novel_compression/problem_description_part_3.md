@@ -8,7 +8,7 @@ Three parts
 
 ## *(Hard)*: Novel Compression, pt. 3: Putting it all together
 
-Welcome to the third and final part of this week's Theme Week. Today is not so much a 'hard' challenge as such, but rather a culmination of this week's efforts. You will be putting your code from Monday and Wednesday into one program that can be operated via the command line or terminal, and will deal with files rather than textual input.
+Welcome to the third and final part of this week's Theme Week. Today is not so much a 'hard' challenge as such, but rather a culmination of this week's efforts. You will be putting your code from Monday and Wednesday into one program that can be operated [via the command line or terminal](http://en.wikipedia.org/wiki/Command-line_interface#Arguments), and will deal with files rather than textual input.
 
 ### Formal Inputs and Outputs
 
@@ -27,7 +27,7 @@ Using the given operation (compress or decompress), the data in the input file w
 
 ### Example Input
 
-There is a plain text copy of Green Eggs and Ham available here, edited to work with our compression algorithm, which can be used to test your program.
+There is a plain text copy of Green Eggs and Ham [available here](http://pastie.org/pastes/9180059/text?key=wmyubynyw72ten8m3gzpfw), edited to work with our compression algorithm, which can be used to test your program.
 
 For example, on Windows:
 
@@ -39,7 +39,7 @@ Or on nearly everything else:
 
 ### Notes
 
-It may be an idea to submit your code to a site such as Github Gist or another code sharing site, rather than pasting it in the comments, as the combined code may be quite long.
+It may be an idea to submit your code to a site such as [Github Gist](https://gist.github.com/) or another code sharing site, rather than pasting it in the comments, as the combined code may be quite long.
 
 Hopefully by the end of this we'll have ported this program to a wide selection of languages.
 
