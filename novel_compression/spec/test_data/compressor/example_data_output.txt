@@ -1,0 +1,13 @@
+11
+the
+quick
+brown
+fox
+jumps
+over
+lazy
+dog
+or
+did
+it
+0^ 1 2 3 4 5 0 6 7 . R 8^ , 9 10 ? E
