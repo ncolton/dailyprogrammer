@@ -11,6 +11,22 @@ describe NovelCompression::Compressor do
 		expect(tokens).to be_an(Array)
 		expect(tokens).to eq(['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog', '.', "\n", 'Or', ',', 'did', 'it', '?'])
 	end
-	it '#classify'
-	describe '#compress'
+
+	describe '#classify' do
+		it 'handles normal words'
+		it 'handles capitalised words'
+		it 'handles upper-cased words'
+		it 'handles hyphenation of words'
+		it 'handles punctuation (.,?!;:)'
+		it 'handles new lines'
+	end
+
+	describe '#compress_token' do
+		it 'handles normal words'
+		it 'handles capitalised words'
+		it 'handles upper-cased words'
+		it 'handles hyphenation of words'
+		it 'handles punctuation (.,?!;:)'
+		it 'handles new lines'
+	end
 end
