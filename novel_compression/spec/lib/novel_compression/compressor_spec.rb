@@ -22,10 +22,8 @@ describe NovelCompression::Compressor do
 			end
 		end
 
-		context '"Waffle-maker"' do
-			let(:input) { "Waffle-maker" }
-			let(:result) { subject.tokenize input }
-			it { expect(result).to eq(['Waffle', '-', 'maker']) }
+		it "given 'Waffle-maker' should return ['Waffle', '-', 'maker']" do
+			expect(subject.tokenize 'Waffle-maker').to eq(['Waffle', '-', 'maker'])
 		end
 	end
 
