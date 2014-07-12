@@ -1,16 +1,20 @@
 module NovelCompression
 	class Compressor
-		def initialize(input)
-			@input = input
+		def self.compress(input)
+			# for each line
+			#   tokenize the line
+			#   for each token
+			#     classify a token into the type
+			#     add downcased token to dictionary if not already in it
+			#     record the compressed instruction
+			# record EOF instruction
 		end
 
-		def tokenize
+		def tokenize(s)
 			regex = /\b?(\w+|[.,?!;:\n])\b?/
 			tokens = []
-			@input.readlines.each do |line|
-				tokens << line.scan(regex)
-			end
-			return tokens.flatten
+			tokens << s.scan(regex)
+			tokens.flatten!
 		end
 	end
 end
