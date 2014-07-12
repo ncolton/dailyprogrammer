@@ -11,7 +11,7 @@ module NovelCompression
 		end
 
 		def tokenize(s)
-			regex = /\b?(\w+|[.,?!;:\n])\b?/
+			regex = /\b?(\w+|[-.,?!;:\n])\b?/
 			tokens = []
 			tokens << s.scan(regex)
 			tokens.flatten!
