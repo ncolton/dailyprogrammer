@@ -12,6 +12,7 @@ module NovelCompression
 
 		def self.should_space?(context)
 			return true if SHOULD_HAVE_SPACE.include? context
+			return false
 		end
 	end
 end
