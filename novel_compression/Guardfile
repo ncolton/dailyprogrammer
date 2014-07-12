@@ -9,3 +9,7 @@ guard :rspec, failed_mode: :focus, all_after_pass: true do
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
 end
+
+guard :inch, all_on_start: true, all_type: :suggest do
+  watch(/.+\.rb/)
+end
