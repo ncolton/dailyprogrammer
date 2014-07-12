@@ -10,6 +10,6 @@ guard :rspec, failed_mode: :focus, all_after_pass: true do
   watch('spec/spec_helper.rb')  { "spec" }
 end
 
-guard :inch, all_on_start: true, all_type: :suggest do
+guard :inch, pedantic: true, all_on_start: true, all_type: :suggest do
   watch(/.+\.rb/)
 end
