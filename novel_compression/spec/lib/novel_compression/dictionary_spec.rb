@@ -29,4 +29,31 @@ describe NovelCompression::Dictionary do
 			expect(subject.size).to eq(1)
 		end
 	end
+
+	describe '#index_for' do
+		it 'returns the "index" of a word' do
+			d = NovelCompression::Dictionary.new
+			d << 'banana'
+			d << 'potato'
+			d << 'fish'
+			d << 'Potato'
+			expect(d.index_for 'banana').to eq(1)
+			expect(d.index_for 'Banana').to eq(1)
+			expect(d.index_for 'potato').to eq(2)
+			expect(d.index_for 'fish').to eq(3)
+		end
+	end
+
+	describe '#word' do
+		it 'returns the word for the specified location' do
+			d = NovelCompression::Dictionary.new
+			d << 'banana'
+			d << 'potato'
+			d << 'fish'
+			d << 'Potato'
+			expect(d.word 1).to eq('banana')
+			expect(d.word 2).to eq('potato')
+			expect(d.word 3).to eq('fish')
+		end
+	end
 end

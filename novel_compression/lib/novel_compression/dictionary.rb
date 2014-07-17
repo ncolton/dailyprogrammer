@@ -9,6 +9,7 @@ module NovelCompression
 	class Dictionary
 		def initialize
 			@words = {}
+			@word_index = []
 		end
 
 		# @method size
@@ -33,6 +34,25 @@ module NovelCompression
 			# and storage speeds quite good, while maintaining a constant
 			# index for the word.
 			@words[word] = @words.size + 1 unless @words.has_key? word
+			@word_index[@words[word]] = word
+		end
+
+		# @method index_for
+		#
+		# Look up the index for a word
+		#
+		# @param word [String]
+		def index_for(word)
+			return @words[word.downcase]
+		end
+
+		# @method word
+		#
+		# Look up a word by it's index
+		#
+		# @param index [Fixnum]
+		def word(index)
+			@word_index[index]
 		end
 	end
 end
