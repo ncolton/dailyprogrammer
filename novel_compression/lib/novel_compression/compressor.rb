@@ -8,15 +8,19 @@ module NovelCompression
 
 		def self.compress(input)
 			compressor = self.new
+			output = []
 			input.each do |line|
 				tokens = compressor.tokenize line
 				tokens.each do |token|
-					# classify a token into the type
-					# if word, add token to dictionary if not already in it
-					# record the compressed instruction
+					token_type = compressor.classify_token token
+					if token_type == :word || token_type == :capitalized_word || token_type == :upcased_word
+						compressor.dictionary << token
+					end
+					output << compressor.compress_token(token)
 				end
-				# record EOF instruction (END_INPUT)
 			end
+			output << 'E '
+			output.join
 		end
 
 		def initialize

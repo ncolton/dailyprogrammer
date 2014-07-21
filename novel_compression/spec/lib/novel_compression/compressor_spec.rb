@@ -27,10 +27,10 @@ describe NovelCompression::Compressor do
 		end
 	end
 
-	xit '.compress' do
+	it '.compress' do
 		input = prep_input 'Woof! Woof!'
 		output = NovelCompression::Compressor.compress input
-		expect(output).to eq('')
+		expect(output).to eq('0^ ! 0^ ! E ')
 	end
 
 	describe '#classify' do
