@@ -28,13 +28,15 @@ module NovelCompression
 		# @param s [String]
 		def <<(s)
 			word = s.downcase
+			return index_for word if @words.has_key? word
 			# I'm being creative here to make look up and storage easy and
 			# 'ordered': The downcased word is the key, and the 'index' is
 			# the value in the hash. This will keep look up speeds by word,
 			# and storage speeds quite good, while maintaining a constant
 			# index for the word.
-			@words[word] = @words.size + 1 unless @words.has_key? word
+			@words[word] = @words.size
 			@word_index[@words[word]] = word
+			return index_for word
 		end
 
 		# @method index_for

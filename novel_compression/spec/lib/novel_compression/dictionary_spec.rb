@@ -28,6 +28,17 @@ describe NovelCompression::Dictionary do
 			subject << 'One'
 			expect(subject.size).to eq(1)
 		end
+
+		it "returns the index the word is stored at" do
+			expect(subject << 'zero').to eq(0)
+			expect(subject << 'one').to eq(1)
+			expect(subject << 'oNe').to eq(1)
+			expect(subject << 'two').to eq(2)
+			expect(subject.index_for 'zero').to eq(0)
+			expect(subject.index_for 'one').to eq(1)
+			expect(subject.index_for 'tWo').to eq(2)
+			expect(subject.index_for 'two').to eq(2)
+		end
 	end
 
 	describe '#index_for' do
@@ -37,10 +48,10 @@ describe NovelCompression::Dictionary do
 			d << 'potato'
 			d << 'fish'
 			d << 'Potato'
-			expect(d.index_for 'banana').to eq(1)
-			expect(d.index_for 'Banana').to eq(1)
-			expect(d.index_for 'potato').to eq(2)
-			expect(d.index_for 'fish').to eq(3)
+			expect(d.index_for 'banana').to eq(0)
+			expect(d.index_for 'Banana').to eq(0)
+			expect(d.index_for 'potato').to eq(1)
+			expect(d.index_for 'fish').to eq(2)
 		end
 	end
 
@@ -51,9 +62,9 @@ describe NovelCompression::Dictionary do
 			d << 'potato'
 			d << 'fish'
 			d << 'Potato'
-			expect(d.word 1).to eq('banana')
-			expect(d.word 2).to eq('potato')
-			expect(d.word 3).to eq('fish')
+			expect(d.word 0).to eq('banana')
+			expect(d.word 1).to eq('potato')
+			expect(d.word 2).to eq('fish')
 		end
 	end
 end

@@ -27,21 +27,60 @@ describe NovelCompression::Compressor do
 		end
 	end
 
+	xit '.compress' do
+		input = prep_input 'Woof! Woof!'
+		output = NovelCompression::Compressor.compress input
+		expect(output).to eq('')
+	end
+
 	describe '#classify' do
-		it 'handles normal words'
-		it 'handles capitalised words'
-		it 'handles upper-cased words'
-		it 'handles hyphenation of words'
-		it 'handles punctuation (.,?!;:)'
-		it 'handles new lines'
+		it 'handles lower-case words' do
+				expect(subject.classify_token 'potato').to be(:word)
+		end
+		it 'handles capitalised words' do
+			expect(subject.classify_token 'Potato').to be(:capitalized_word)
+		end
+		it 'handles upper-case words' do
+			expect(subject.classify_token 'POTATO').to be(:upcased_word)
+		end
+		it 'handles hyphenation of words' do
+			expect(subject.classify_token '-').to be(:hyphen)
+		end
+		it 'handles punctuation (.,?!;:)' do
+			['.', ',', '?', '!', ';', ':'].each do |token|
+				expect(subject.classify_token token).to be(:punctuation)
+			end
+		end
+		it 'handles new lines' do
+			expect(subject.classify_token "\n").to be(:newline)
+		end
 	end
 
 	describe '#compress_token' do
-		it 'handles normal words'
-		it 'handles capitalised words'
-		it 'handles upper-cased words'
-		it 'handles hyphenation of words'
-		it 'handles punctuation (.,?!;:)'
-		it 'handles new lines'
+		# inject the dict? probably simplest ...
+		let(:test_word) { 'supercalifragilistic' }
+		it 'handles normal words' do
+			index = subject.dictionary << test_word
+			expect(subject.compress_token test_word).to eq("#{index} ")
+		end
+		it 'handles capitalised words' do
+			index = subject.dictionary << test_word
+			expect(subject.compress_token test_word.capitalize).to eq("#{index}^ ")
+		end
+		it 'handles upper-cased words' do
+			index = subject.dictionary << test_word
+			expect(subject.compress_token test_word.upcase).to eq("#{index}! ")
+		end
+		it 'handles hyphenation of words' do
+			expect(subject.compress_token '-').to eq('- ')
+		end
+		it 'handles punctuation (.,?!;:)' do
+			'.,?!;:'.each_char do |character|
+				expect(subject.compress_token character).to eq("#{character} ")
+			end
+		end
+		it 'handles new lines' do
+			expect(subject.compress_token "\n").to eq("R ")
+		end
 	end
 end
