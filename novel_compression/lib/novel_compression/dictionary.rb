@@ -56,5 +56,9 @@ module NovelCompression
 		def word(index)
 			@word_index[index]
 		end
+
+		def to_s
+			([size] + @word_index).join("\n")
+		end
 	end
 end

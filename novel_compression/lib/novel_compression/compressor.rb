@@ -20,7 +20,7 @@ module NovelCompression
 				end
 			end
 			output << 'E '
-			output.join
+			"#{compressor.dictionary}\n" + output.join
 		end
 
 		def initialize

@@ -30,7 +30,7 @@ describe NovelCompression::Compressor do
 	it '.compress' do
 		input = prep_input 'Woof! Woof!'
 		output = NovelCompression::Compressor.compress input
-		expect(output).to eq('0^ ! 0^ ! E ')
+		expect(output).to eq("1\nwoof\n0^ ! 0^ ! E ")
 	end
 
 	describe '#classify' do
@@ -57,7 +57,6 @@ describe NovelCompression::Compressor do
 	end
 
 	describe '#compress_token' do
-		# inject the dict? probably simplest ...
 		let(:test_word) { 'supercalifragilistic' }
 		it 'handles normal words' do
 			index = subject.dictionary << test_word
@@ -81,6 +80,29 @@ describe NovelCompression::Compressor do
 		end
 		it 'handles new lines' do
 			expect(subject.compress_token "\n").to eq("R ")
+		end
+	end
+
+	context 'Challenge example Input' do
+		'./spec/test_data/compressor/'
+		let(:input) { open './spec/test_data/compressor/example_data_input.txt' }
+		let(:expected_output) do
+			fd = open './spec/test_data/compressor/example_data_output.txt'
+			fd.read.chomp
+		end
+		it 'results in Challenge example Output' do
+			expect(NovelCompression::Compressor.compress input).to eq(expected_output)
+		end
+	end
+
+	context 'Challenge Input' do
+		let(:input) { open './spec/test_data/compressor/challenge_input.txt' }
+		let(:expected_output) do
+			fd = open './spec/test_data/compressor/challenge_output.txt'
+			fd.read.chomp
+		end
+		it 'results in Challenge Output' do
+			expect(NovelCompression::Compressor.compress input).to eq(expected_output)
 		end
 	end
 end
