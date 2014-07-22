@@ -54,6 +54,10 @@ describe NovelCompression::Compressor do
 		it 'handles new lines' do
 			expect(subject.classify_token "\n").to be(:newline)
 		end
+		it 'considers single letter words capitalised instead of upper-cased' do
+			expect(subject.classify_token 'I').to be(:capitalized_word)
+			expect(subject.classify_token 'A').to be(:capitalized_word)
+		end
 	end
 
 	describe '#compress_token' do

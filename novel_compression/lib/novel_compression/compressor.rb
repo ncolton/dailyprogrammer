@@ -44,10 +44,10 @@ module NovelCompression
 			when *ACCEPTED_PUNCTUATION
 				return :punctuation
 			when /[[:alpha:]]/
-				if token == token.upcase
-					return :upcased_word
-				elsif token == token.capitalize
+				if token == token.capitalize
 					return :capitalized_word
+				elsif token == token.upcase
+					return :upcased_word
 				else
 					return :word
 				end
