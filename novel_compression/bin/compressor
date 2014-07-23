@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+require 'novel_compression'
+
+class NovelCompressor < Thor
+	package_name "NovelCompressor"
+
+	desc 'compress input_file output_file', 'compress input_file, writing to output_file'
+	method_option :aliases => '-c'
+	def compress(input_file, output_file)
+	end
+
+	method_option :aliases => '-d'
+	desc 'decompress', 'decompress input_file, writing to output_file'
+	def decompress(input_file, output_file)
+	end
+end
+
+NovelCompressor.start
