@@ -1,20 +1,49 @@
 #!/usr/bin/env ruby
 
-require 'thor'
+require 'optparse'
 require 'novel_compression'
 
-class NovelCompressor < Thor
-	package_name "NovelCompressor"
+options = {}
+optparse = OptionParser.new do |opts|
+  opts.banner = "Usage: #{opts.program_name} <-c|-d> INFILE OUTFILE"
 
-	desc 'compress input_file output_file', 'compress input_file, writing to output_file'
-	method_option :aliases => '-c'
-	def compress(input_file, output_file)
-	end
-
-	method_option :aliases => '-d'
-	desc 'decompress', 'decompress input_file, writing to output_file'
-	def decompress(input_file, output_file)
-	end
+  opts.on('-c', 'compress text in INFILE and write to OUTFILE') do
+    options[:action] = :compress
+  end
+  opts.on('-d', 'decompress text in INFILE and write to OUTFILE') do
+    options[:action] = :decompress
+  end
+  opts.on('-h', 'display help') do
+    options[:action] = :help
+  end
 end
 
-NovelCompressor.start
+optparse.parse!
+
+if options[:action] == :help ||  ARGV.length < 2
+  puts optparse.help
+  exit false
+end
+
+input_file = ARGV[0]
+output_file = ARGV[1]
+
+if not File.exists? input_file
+  $stderr.puts "Input file #{input_file} appears to not exist."
+  exit false
+elsif File.exists? output_file
+  $stderr.puts "Output file #{output_file} already exists."
+  exit false
+end
+
+input_fd = open(input_file, mode='r')
+output_fd = open(output_file, mode='w')
+if options[:action] == :compress
+  output_fd.write(NovelCompression.compress input_fd)
+  output_fd.write("\n")
+elsif options[:action] == :decompress
+  output_fd.write(NovelCompression.decompress input_fd)
+end
+
+input_fd.close
+output_fd.close

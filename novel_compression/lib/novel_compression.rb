@@ -4,5 +4,12 @@ require 'novel_compression/spacing'
 require 'novel_compression/compressor'
 
 module NovelCompression
-  # Your code goes here...
+  def self.compress(input)
+    NovelCompression::Compressor.compress input
+  end
+
+  def self.decompress(input)
+    decompressor = NovelCompression::Decompressor.new input
+    decompressor.text
+  end
 end
