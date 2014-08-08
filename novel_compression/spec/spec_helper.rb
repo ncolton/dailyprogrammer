@@ -1,4 +1,14 @@
+require 'simplecov'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter
+]
+SimpleCov.start do
+  add_filter "/spec/"
+end
+
 require 'rspec'
+require 'novel_compression'
 
 # $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../lib'))
 

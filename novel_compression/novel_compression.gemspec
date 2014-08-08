@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-yard'
   spec.add_development_dependency 'terminal-notifier-guard'
   spec.add_development_dependency 'rspec', '~>3'
+  spec.add_development_dependency 'simplecov', '~>0.8.2'
 end
